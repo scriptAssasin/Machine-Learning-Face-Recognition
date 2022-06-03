@@ -89,6 +89,7 @@ pca = PCA(n_components=30).fit(X_train)
 X_train_pca = pca.transform(X_train)
 
 classifier = KNeighborsClassifier().fit(X_train_pca, Y_train)
+
 X_test_pca = pca.transform(X_test)
 predictions = classifier.predict(X_test_pca)
 
