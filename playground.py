@@ -1,4 +1,5 @@
 # import cv2
+import math
 import zipfile
 import numpy as np
 import os
@@ -10,6 +11,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.decomposition import PCA
 from sklearn.metrics import confusion_matrix, classification_report
 from sklearn.neighbors import KNeighborsClassifier
+import math
 
 
 current_path = os.getcwd()
@@ -105,13 +107,14 @@ X_test_5, Y_test_5 = loadImages(current_path + "/faces/",5)
 
 std = StandardScaler()
 
-X_train = std.fit_transform(X_train)
+# X_train_original = X_train
+# X_train = std.fit_transform(X_train)
 
-X_test_1 = std.fit_transform(X_test_1)
-X_test_2 = std.fit_transform(X_test_2)
-X_test_3 = std.fit_transform(X_test_3)
-X_test_4 = std.fit_transform(X_test_4)
-X_test_5 = std.fit_transform(X_test_5)
+# X_test_1 = std.fit_transform(X_test_1)
+# X_test_2 = std.fit_transform(X_test_2)
+# X_test_3 = std.fit_transform(X_test_3)
+# X_test_4 = std.fit_transform(X_test_4)
+# X_test_5 = std.fit_transform(X_test_5)
 
 # print(X_train, Y_train)
 
@@ -123,43 +126,66 @@ classifier = KNeighborsClassifier(metric="euclidean").fit(X_train_pca, Y_train)
 X_test_1_pca = pca.transform(X_test_1)
 predictions_1 = classifier.predict(X_test_1_pca)
 
-X_test_2_pca = pca.transform(X_test_2)
-predictions_2 = classifier.predict(X_test_2_pca)
+# X_test_2_pca = pca.transform(X_test_2)
+# predictions_2 = classifier.predict(X_test_2_pca)
 
-X_test_3_pca = pca.transform(X_test_3)
-predictions_3 = classifier.predict(X_test_3_pca)
+# X_test_3_pca = pca.transform(X_test_3)
+# predictions_3 = classifier.predict(X_test_3_pca)
 
-X_test_4_pca = pca.transform(X_test_4)
-predictions_4 = classifier.predict(X_test_4_pca)
+# X_test_4_pca = pca.transform(X_test_4)
+# predictions_4 = classifier.predict(X_test_4_pca)
 
-X_test_5_pca = pca.transform(X_test_5)
-predictions_5 = classifier.predict(X_test_5_pca)
+# X_test_5_pca = pca.transform(X_test_5)
+# predictions_5 = classifier.predict(X_test_5_pca)
 
 print(classification_report(Y_test_1, predictions_1))
 
 
-pca = PCA(n_components=30).fit(X_train)
-X_train_pca = pca.transform(X_train)
+# pca = PCA(n_components=30).fit(X_train)
+# X_train_pca = pca.transform(X_train)
 
-classifier = KNeighborsClassifier(metric="euclidean").fit(X_train_pca, Y_train)
+# classifier = KNeighborsClassifier(metric="euclidean").fit(X_train_pca, Y_train)
 
-X_test_1_pca = pca.transform(X_test_1)
-predictions_1 = classifier.predict(X_test_1_pca)
+# X_test_1_pca = pca.transform(X_test_1)
+# predictions_1 = classifier.predict(X_test_1_pca)
 
-X_test_2_pca = pca.transform(X_test_2)
-predictions_2 = classifier.predict(X_test_2_pca)
+# X_test_2_pca = pca.transform(X_test_2)
+# predictions_2 = classifier.predict(X_test_2_pca)
 
-X_test_3_pca = pca.transform(X_test_3)
-predictions_3 = classifier.predict(X_test_3_pca)
+# X_test_3_pca = pca.transform(X_test_3)
+# predictions_3 = classifier.predict(X_test_3_pca)
 
-X_test_4_pca = pca.transform(X_test_4)
-predictions_4 = classifier.predict(X_test_4_pca)
+# X_test_4_pca = pca.transform(X_test_4)
+# predictions_4 = classifier.predict(X_test_4_pca)
 
-X_test_5_pca = pca.transform(X_test_5)
-predictions_5 = classifier.predict(X_test_5_pca)
+# X_test_5_pca = pca.transform(X_test_5)
+# predictions_5 = classifier.predict(X_test_5_pca)
 
-plt.imshow(pca.components_[0].reshape(50,50),cmap='binary_r')
+# plt.imshow(pca.components_[6].reshape(50,50),cmap='bone')
+# plt.show()
+
+plt.figure(figsize=(9, 4))
+for i in range(0,len(pca.components_),1):
+  plt.subplot(3, 4, i+1)
+  plt.imshow(pca.components_[i].reshape(50, 50), cmap='binary_r')
 plt.show()
+
+
+
+projected = pca.inverse_transform(X_train_pca)
+
+# plt.figure(figsize=(9, 4))
+# for i in range(0,70,7):
+#   plt.subplot(3, 4, math.ceil((i+1)/7))
+#   plt.imshow(X_train_original[i].reshape(50, 50), cmap='binary_r')
+# plt.show()
+
+# plt.figure(figsize=(9, 4))
+# for i in range(0,70,7):
+#   plt.subplot(3, 4, math.ceil((i+1)/7))
+#   plt.imshow(projected[i].reshape(50, 50), cmap='binary_r')
+# plt.show()
+#print(pca.components_)
 
 
 
