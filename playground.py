@@ -4,6 +4,7 @@ import zipfile
 import numpy as np
 import os
 import matplotlib.pyplot as plt
+from sklearn.decomposition import TruncatedSVD
 
 from PIL import Image
 from sklearn.preprocessing import StandardScaler
@@ -108,9 +109,9 @@ X_test_5, Y_test_5 = loadImages(current_path + "/faces/",5)
 std = StandardScaler()
 
 # X_train_original = X_train
-# X_train = std.fit_transform(X_train)
+X_train = std.fit_transform(X_train)
 
-# X_test_1 = std.fit_transform(X_test_1)
+X_test_1 = std.fit_transform(X_test_1)
 # X_test_2 = std.fit_transform(X_test_2)
 # X_test_3 = std.fit_transform(X_test_3)
 # X_test_4 = std.fit_transform(X_test_4)
@@ -166,13 +167,15 @@ print(classification_report(Y_test_1, predictions_1))
 
 plt.figure(figsize=(9, 4))
 for i in range(0,len(pca.components_),1):
-  plt.subplot(3, 4, i+1)
+  plt.subplot(3, 3, i+1)
   plt.imshow(pca.components_[i].reshape(50, 50), cmap='binary_r')
 plt.show()
 
 
 
 projected = pca.inverse_transform(X_train_pca)
+
+
 
 # plt.figure(figsize=(9, 4))
 # for i in range(0,70,7):
@@ -187,6 +190,13 @@ projected = pca.inverse_transform(X_train_pca)
 # plt.show()
 #print(pca.components_)
 
+svd = TruncatedSVD(n_components=9).fit(X_train)
 
-
+X_train_svd = svd.transform(X_train)
 # print(array)
+
+plt.figure(figsize=(9, 4))
+for i in range(0,len(svd.components_),1):
+  plt.subplot(3, 3, i+1)
+  plt.imshow(svd.components_[i].reshape(50, 50), cmap='binary_r')
+plt.show()
